@@ -1,322 +1,235 @@
+/*
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Licenses/license-default.txt to change this license
+ * Click nbfs://nbhost/SystemFileSystem/Templates/Classes/Class.java to edit this template
+ */
 package com.example;
-import java.util.Scanner;
 import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-import java.lang.String;
+import java.util.Scanner;
+import java.util.Arrays;
 
-public final class Urna {
-    private ArrayList<Presidente> listaPresidentes = new ArrayList<Presidente>();
-    private ArrayList<Governador> listaGovernadores = new ArrayList<Governador>();
-    private ArrayList<Prefeito> listaPrefeitos = new ArrayList<Prefeito>();
-    private ArrayList<Eleitores> listaEleitores = new ArrayList<Eleitores>();
-    
-    private ArrayList<Integer> votosPresidente = new ArrayList<Integer>();
-    private ArrayList<Integer> votosGovernador = new ArrayList<Integer>();
-    private ArrayList<Integer> votosPrefeito = new ArrayList<Integer>();
-
-    private ArrayList<Integer> votosBrancoPresidente = new ArrayList<Integer>();
-    private ArrayList<Integer> votosNuloPresidente = new ArrayList<Integer>();
-    private ArrayList<Integer> votosBrancoGovernador = new ArrayList<Integer>();
-    private ArrayList<Integer> votosNuloGovernador = new ArrayList<Integer>();
-    private ArrayList<Integer> votosBrancoPrefeito = new ArrayList<Integer>();
-    private ArrayList<Integer> votosNuloPrefeito = new ArrayList<Integer>();
-    
-    public Urna() {
-        //default
-    }
-
+public class Urna {
+    Scanner entrada = new Scanner(System.in);
+    ArrayList<Candidato> listaPresidentes = new ArrayList<Candidato>();
+    ArrayList<Candidato> listaGovernadores = new ArrayList<Candidato>();
+    ArrayList<Candidato> listaPrefeitos = new ArrayList<Candidato>();
+    ArrayList<Eleitores> listaEleitores = new ArrayList<Eleitores>();
+    private int qtdNulo = 0;
+    private int qtdBranco = 0;
+    private boolean confirma = true;
+    int numVotosPresidentes = 0;
+    int numVotosGovernadores = 0;
+    int numVotosPrefeitos = 0;
+    int totalVotos = 0;
+            
     public void cadastrarCandidato(){
-        Scanner ler = new Scanner(System.in);
-        System.out.println("CADASTRO DE CANDIDATOS\n");
+        Candidato candidato;
+        int opcao = 1;
         
-        while (true){
-            System.out.println("DIGITE O NÚMERO INDICADO PARA O CARGO DESEJADO:\n1 - PRESIDENTE\n2 - GOVERNADOR\n3 - PREFEITO\n");
-            int resp1 = ler.nextInt();
+        while (opcao != 0){
+            candidato = new Candidato();
             
-            if (resp1 == 1){
-                System.out.println("Qual o nome do presidenciável?\n");
-                String nome = ler.next();
-
-                System.out.println("Qual o partido do presidenciável?\n");
-                String partido = ler.next();
-
-                System.out.println("Qual o número do presidenciável (DOIS DÍGITOS)?\n");
-                int numCandidato = ler.nextInt();
-
-                Presidente presidente = new Presidente(nome, partido, numCandidato, "presidente");
-                listaPresidentes.add(presidente);
+            System.out.println("Digite o nome do candidato: ");
+            candidato.setNome(entrada.next());
+            System.out.println("Digite o número do candidato: ");
+            candidato.setNumCandidato(entrada.nextInt());
+            System.out.println("Digite o partido do candidato: ");
+            candidato.setPartido(entrada.next());
+            System.out.println("Digite o cargo do candidato: ");
+            candidato.setCargo(entrada.next());
+            
+            if (candidato.getCargo().contains("Presidente")){
+                listaPresidentes.add(candidato);
+            }else if(candidato.getCargo().contains("Governador")){
+                listaGovernadores.add(candidato);
+            }else if (candidato.getCargo().contains("Prefeito")){
+                listaPrefeitos.add(candidato);
             }
-            
-            else if (resp1 == 2){
-                System.out.println("Qual o nome do governador?\n");
-                String nome = ler.next();
-
-                System.out.println("Qual o partido do governador?\n");
-                String partido = ler.next();
-
-                System.out.println("Qual o número do governador (TRÊS DÍGITOS)?\n");
-                int numCandidato = ler.nextInt();
-
-                Governador governador = new Governador(nome, partido, numCandidato, "governador");
-                listaGovernadores.add(governador);
-            }
-            
-            else if (resp1 == 3){
-                System.out.println("Qual o nome do Prefeito?\n");
-                String nome = ler.next();
-
-                System.out.println("Qual o partido do prefeito?\n");
-                String partido = ler.next();
-
-                System.out.println("Qual o número do prefeito (QUATRO DÍGITOS)?\n");
-                int numCandidato = ler.nextInt();
-
-                Prefeito prefeito = new Prefeito(nome, partido, numCandidato, "prefeito");
-                listaPrefeitos.add(prefeito);
-            }
-            
-            System.out.println("\nDeseja inserir um novo candidato?");
-            String resposta = ler.next();
-            System.out.println("\n");
-
-            if (resposta.equalsIgnoreCase("não") || resposta.equalsIgnoreCase("nao")){
-                break;
-
-            } else {continue;}
+            System.out.println("Deseja cadastrar mais um candidato? Digite 1 para sim ou 0 para nao");
+            opcao = entrada.nextInt();
         }
     }
-
+    
     public void cadastrarEleitor(){
-        Scanner ler = new Scanner(System.in);
-        System.out.println("CADASTRO DE ELEITORES\n");
-
-        while (true){
-            System.out.println("Qual o nome do eleitor?\n");
-            String nome = ler.next();
-
-            System.out.println("Qual o cpf do eleitor?\n");
-            String cpf = ler.next();         
+        Eleitores eleitor;
+        int opcao = 1;
+        
+        while (opcao != 0){
+            eleitor = new Eleitores();
             
-            Eleitores eleitor = new Eleitores(nome, cpf);
+            System.out.println("Digite o nome do eleitor: ");
+            eleitor.setNome(entrada.next());
+            System.out.println("Digite o CPF do eleitor: ");
+            eleitor.setCpf(entrada.next());
+            System.out.println("Deseja inserir outro eleitor?");
             listaEleitores.add(eleitor);
-
-            System.out.println("\nDeseja inserir um novo eleitor?");
-            String resposta = ler.next();
-            System.out.println("\n");
-
-            if (resposta.equalsIgnoreCase("não") || resposta.equalsIgnoreCase("nao")){
-                break;
-            } else {continue;}
+            System.out.println("Digite 1 para sim ou 0 para nao");
+            opcao = entrada.nextInt();
         }
     }
-
-    public void vota(){
-        Scanner ler = new Scanner(System.in);
-        System.out.println("ETAPA DE VOTAÇÃO\n");
-        System.out.println("REGRAS DE VOTAÇÃO:\nEtapas: Prefeito -> Governador -> Presidente\nVoto branco: digitar -1\nVoto nulo: digitar -2\n");
-
-        int counter = 0;
-        while (counter <= listaEleitores.size()){
-            for (int i = 0; i < listaEleitores.size(); i++){
-                System.out.println("Nome do eleitor: " + listaEleitores.get(i).getNome());
-
-                System.out.println("\nLista de presidenciáveis:");
-                for (int j = 0; j < listaPresidentes.size(); j++){
-                    System.out.println("Nome: " + listaPresidentes.get(j).getNome());
-                    System.out.println("Número do candidato: " + listaPresidentes.get(j).getNum_candidato());
-                    System.out.println("Partido: " + listaPresidentes.get(j).getPartido() + "\n");
-                }
-                System.out.println("----------------------------------------------\n");
-                
-                while (true){
-                    System.out.println("DIGITE O NÚMERO DO SEU CANDIDATO PARA PRESIDENTE (DOIS DÍGITOS):\n");
-                    int numPresidente = ler.nextInt();
-                    System.out.println("CONFIRMA O VOTO EM " + numPresidente + "?\n");
-                    String respostaP = ler.next();
-                    System.out.println("\n");
-
-                    if (respostaP.equalsIgnoreCase("sim")){
-                        if (numPresidente == -1){
-                            votosBrancoPresidente.add(numPresidente);
-                        } else if (numPresidente == -2){
-                            votosNuloPresidente.add(numPresidente);
-                        } else {
-                            votosPresidente.add(numPresidente);
+    
+    public void votar(){
+        Eleitores eleitor;
+        for(int i = 0; i < listaEleitores.size(); i++){
+            while(confirma == true){
+                System.out.println("Digite seu voto para prefeito: ");
+                int num = entrada.nextInt();
+                Candidato candidato = getCandidatoByNum(num,1);
+                    if(candidato != null){
+                        candidato.addVoto();
+                        System.out.print("Voto computado com sucesso!!\n");
+                        confirma = false;
+                    }else if(num == -2){
+                        System.out.print("Voto nulo computado com sucesso!!\n");
+                            confirma = false;
+                            qtdNulo++;
+                        
+                    }else if(num == -1){
+                        System.out.print("Voto branco computado com sucesso!!\n");
+                            qtdBranco++;
+                            confirma = false;
                         }
-                        counter++;
-                        break;
-                    } else {continue;}
-                }
-
-                System.out.println("Lista de governadores:");
-                for (int j = 0; j < listaGovernadores.size(); j++){
-                    System.out.println("Nome: " + listaGovernadores.get(j).getNome());
-                    System.out.println("Número do candidato: " + listaGovernadores.get(j).getNum_candidato());
-                    System.out.println("Partido: " + listaGovernadores.get(j).getPartido() + "\n");
-                }
-                System.out.println("----------------------------------------------\n");
-                
-                while (true){
-                    System.out.println("DIGITE O NÚMERO DO SEU CANDIDATO PARA GOVERNADOR (TRÊS DÍGITOS):\n");
-                    int numGovernador = ler.nextInt();
-                    System.out.println("CONFIRMA O VOTO EM " + numGovernador + "?\n");
-                    String respostaG = ler.next();
-                    System.out.println("\n");
-
-                    if (respostaG.equalsIgnoreCase("sim")){
-                        if (numGovernador == -1){
-                            votosBrancoGovernador.add(numGovernador);
-                        } else if (numGovernador == -2){
-                            votosNuloGovernador.add(numGovernador);
-                        } else {
-                            votosGovernador.add(numGovernador);
+                  
+                System.out.println("Digite seu voto para governador: ");
+                num = entrada.nextInt();
+                candidato = getCandidatoByNum(num,2);
+                    if(candidato != null){
+                        candidato.addVoto();
+                        System.out.print("Voto computado com sucesso!!\n");
+                        confirma = false;
+                    }else if(num == -2){
+                        System.out.print("Voto nulo computado com sucesso!!\n");
+                            confirma = false;
+                            qtdNulo++;
+                        
+                    }else if(num == -1){
+                        System.out.print("Voto branco computado com sucesso!!\n");
+                            qtdBranco++;
+                            confirma = false;
                         }
-                        counter++;
-                        break;
-                    } else {continue;}
+                    
+                System.out.println("Digite seu voto para presidente: ");
+                num = entrada.nextInt();
+                candidato = getCandidatoByNum(num,3);
+                    if(candidato != null){
+                        candidato.addVoto();
+                        System.out.print("Voto computado com sucesso!!\n");
+                        confirma = false;
+                    }else if(num == -2){
+                        System.out.print("Voto nulo computado com sucesso!!\n");
+                            confirma = false;
+                            qtdNulo++;
+                        
+                    }else if(num == -1){
+                        System.out.print("Voto branco computado com sucesso!!\n");
+                            qtdBranco++;
+                            confirma = false;
+                        
+                    }
+            }
+            confirma = true;
+        }
+    }
+        
+    public Candidato getCandidatoByNum(int numero, int tipo){
+            if(tipo == 1){ //prefeito
+                for(Candidato candidato: listaPrefeitos){
+                    if(candidato.getNumCandidato() == numero){
+                        return candidato;
+                    }
                 }
-
-                System.out.println("Lista de prefeitos:");
-                for (int j = 0; j < listaPrefeitos.size(); j++){
-                    System.out.println("Nome: " + listaPrefeitos.get(j).getNome());
-                    System.out.println("Número do candidato: " + listaPrefeitos.get(j).getNum_candidato());
-                    System.out.println("Partido: " + listaPrefeitos.get(j).getPartido() + "\n");
+            }else if(tipo == 2){ //governador
+                for(Candidato candidato: listaGovernadores){
+                    if(candidato.getNumCandidato() == numero){
+                        return candidato;
+                    }
                 }
-                System.out.println("----------------------------------------------\n");
-
-                while (true){
-                    System.out.println("DIGITE O NÚMERO DO SEU CANDIDATO PARA PREFEITO (QUARTO DÍGITOS):\n");
-                    int numPrefeito = ler.nextInt();
-                    System.out.println("CONFIRMA O VOTO EM " + numPrefeito + "?\n");
-                    String respostaPR = ler.next();
-                    System.out.println("\n");
-
-                    if (respostaPR.equalsIgnoreCase("sim")){
-                        if (numPrefeito == -1){
-                            votosBrancoPrefeito.add(numPrefeito);
-                        } else if (numPrefeito == -2){
-                            votosNuloPrefeito.add(numPrefeito);
-                        } else {
-                            votosPrefeito.add(numPrefeito);
-                        }
-                        counter++;
-                        break;
-                    } else {continue;}
+            }else if(tipo == 3){ //presidente
+                for(Candidato candidato: listaPresidentes){
+                    if(candidato.getNumCandidato() == numero){
+                        return candidato;
+                    }
                 }
             }
+            return null;
+    }
+    
+    public int ranking(int tipo){
+        if(tipo == 1){
+            int maior = listaPresidentes.get(0).getQntdVotos();
+            for(int i = 1; i < listaPresidentes.size(); i++){
+                if(maior > listaPresidentes.get(i).getQntdVotos()){
+                }else if(listaPresidentes.get(i).getQntdVotos() > maior){
+                    maior = listaPresidentes.get(i).getQntdVotos();         
+                }
+            }
+            return maior;
         }
-    }
-
-    private int[] apuraPresidente(){
-        int totalVotos = votosPresidente.size() + votosBrancoPresidente.size() + votosNuloPresidente.size();
-        int counterBrancos = votosBrancoPresidente.size();
-        int counterNulos = votosNuloPresidente.size();
-        int counterValidos = totalVotos - (counterBrancos + counterNulos);
-
-        int [] listaGeral = new int[4];
-        listaGeral[0] = totalVotos;
-        listaGeral[1] = counterValidos;
-        listaGeral[2] = counterBrancos;
-        listaGeral[3] = counterNulos;
-
-        return listaGeral;
-    }
-
-    private int[] apuraGovernador(){
-        int totalVotos = votosGovernador.size() + votosBrancoGovernador.size() + votosNuloGovernador.size();
-        int counterBrancos = votosBrancoGovernador.size();
-        int counterNulos = votosNuloGovernador.size();
-        int counterValidos = totalVotos - (counterBrancos + counterNulos);
-
-        int [] listaGeral = new int[4];
-        listaGeral[0] = totalVotos;
-        listaGeral[1] = counterValidos;
-        listaGeral[2] = counterBrancos;
-        listaGeral[3] = counterNulos;
-
-        return listaGeral;
-    }
-
-    private int[] apuraPrefeitos(){
-        int totalVotos = votosPrefeito.size() + votosBrancoPrefeito.size() + votosNuloPrefeito.size();
-        int counterBrancos = votosBrancoPrefeito.size();
-        int counterNulos = votosNuloPrefeito.size();
-        int counterValidos = totalVotos - (counterBrancos + counterNulos);
-
-        int [] listaGeral = new int[4];
-        listaGeral[0] = totalVotos;
-        listaGeral[1] = counterValidos;
-        listaGeral[2] = counterBrancos;
-        listaGeral[3] = counterNulos;
-
-        return listaGeral;
-    }
-
-    public void apurar(){
-        System.out.println("VOTOS PARA PRESIDENTE");
-        Map<Integer, Integer> votosP = new HashMap<>();
-        votosPresidente.forEach(num -> votosP.compute(num, (chave, valor) -> (valor == null ? 1 : valor + 1)));
-        votosP.forEach((chave, valor) -> System.out.println(String.format("N° do partido: %d - %d voto(s)", chave, votosP.get(chave))));
-
-        int [] listaGeralP = apuraPresidente();
-        double validosP = listaGeralP[1];
-        double brancosP = listaGeralP[2];
-        double nulosP = listaGeralP[3];
-        System.out.println("\nTOTAL DE VOTOS = " + listaGeralP[0]);
-        System.out.println("TOTAL DE VOTOS VÁLIDOS E % = " + listaGeralP[1] + " voto(s) (" + String.format("%.2f", (validosP/listaGeralP[0]) * 100) + "%)");
-        System.out.println("TOTAL DE VOTOS BRANCOS E % = " + listaGeralP[2] + " voto(s) (" + String.format("%.2f", (brancosP/listaGeralP[0]) * 100) + "%)");
-        System.out.println("TOTAL DE VOTOS NULOS E % = " + listaGeralP[3] + " voto(s) (" + String.format("%.2f", (nulosP/listaGeralP[0]) * 100) + "%)");
-        System.out.println("\n");
-
-        System.out.println("VOTOS PARA GOVERNADOR");
-        Map<Integer, Integer> votosG = new HashMap<>();
-        votosGovernador.forEach(num -> votosG.compute(num, (chave, valor) -> (valor == null ? 1 : valor + 1)));
-        votosG.forEach((chave, valor) -> System.out.println(String.format("N° do partido: %d - %d voto(s)", chave, votosG.get(chave))));
-
-        int [] listaGeralG = apuraGovernador();
-        double validosG = listaGeralG[1];
-        double brancosG = listaGeralG[2];
-        double nulosG = listaGeralG[3];
-        System.out.println("\nTOTAL DE VOTOS = " + listaGeralG[0]);
-        System.out.println("TOTAL DE VOTOS VÁLIDOS E % = " + listaGeralG[1] + " voto(s) (" + String.format("%.2f", (validosG/listaGeralG[0]) * 100) + "%)");
-        System.out.println("TOTAL DE VOTOS BRANCOS E % = " + listaGeralG[2] + " voto(s) (" + String.format("%.2f", (brancosG/listaGeralG[0]) * 100) + "%)");
-        System.out.println("TOTAL DE VOTOS NULOS E % = " + listaGeralG[3] + " voto(s) (" + String.format("%.2f", (nulosG/listaGeralG[0]) * 100) + "%)");
-        System.out.println("\n");
-
-        System.out.println("VOTOS PARA PREFEITO");
-        Map<Integer, Integer> votosPR = new HashMap<>();
-        votosPrefeito.forEach(num -> votosPR.compute(num, (chave, valor) -> (valor == null ? 1 : valor + 1)));
-        votosPR.forEach((chave, valor) -> System.out.println(String.format("N° do partido: %d - %d voto(s)", chave, votosPR.get(chave))));
-
-        int [] listaGeralPR = apuraPrefeitos();
-        double validosPR = listaGeralPR[1];
-        double brancosPR = listaGeralPR[2];
-        double nulosRP = listaGeralPR[3];
-        System.out.println("\nTOTAL DE VOTOS = " + listaGeralPR[0]);
-        System.out.println("TOTAL DE VOTOS VÁLIDOS E % = " + listaGeralPR[1] + " voto(s) (" + String.format("%.2f", (validosPR/listaGeralPR[0]) * 100) + "%)");
-        System.out.println("TOTAL DE VOTOS BRANCOS E % = " + listaGeralPR[2] + " voto(s) (" + String.format("%.2f", (brancosPR/listaGeralPR[0]) * 100) + "%)");
-        System.out.println("TOTAL DE VOTOS NULOS E % = " + listaGeralPR[3] + " voto(s) (" + String.format("%.2f", (nulosRP/listaGeralPR[0]) * 100) + "%)");
-        System.out.println("\n");
-    }
-
-    public void estatistica(){
-        int [] listaGeral = apuraPresidente();
-        int totalVotos = listaGeral[0];
-
-        System.out.println("LISTA DE ELEITORES QUE VOTARAM:");
-        for (int i = 0; i < listaEleitores.size(); i++){
-            System.out.println("Nome: " + listaEleitores.get(i).getNome());
-            System.out.println("CPF: " + listaEleitores.get(i).getCpf() + "\n");
+        else if(tipo == 2){
+            int maior = listaGovernadores.get(0).getQntdVotos();
+            for(int i = 1; i < listaGovernadores.size(); i++){
+                if(maior > listaGovernadores.get(i).getQntdVotos()){
+                }else if(listaGovernadores.get(i).getQntdVotos() > maior){
+                    maior = listaGovernadores.get(i).getQntdVotos();         
+                }
+            }
+            return maior;
         }
-        System.out.println("----------------------------------------------\n");
-
-        System.out.println("AUDITORIA DE VOTOS:");
-        System.out.println("QUANTIDADE DE ELEITORES: " + listaEleitores);
-        System.out.println("QUANTIDADE DE VOTOS: " + totalVotos);
-        System.out.println("AUDITORIA: OK!");
-        System.out.println("----------------------------------------------\n");
-
-
+        else if(tipo == 3){
+            int maior = listaPrefeitos.get(0).getQntdVotos();
+            for(int i = 1; i < listaPrefeitos.size(); i++){
+                if(maior > listaPrefeitos.get(i).getQntdVotos()){
+                }else if(listaPrefeitos.get(i).getQntdVotos() > maior){
+                    maior = listaPrefeitos.get(i).getQntdVotos();         
+                }
+            }
+            return maior;
+        } return 0;
+    }
+    
+    public void apurarResultados(){
+            for(int i = 0; i < listaPresidentes.size(); i++){
+                if (ranking(1) == listaPresidentes.get(i).getQntdVotos()){
+                    System.out.println("Primeiro lugar Presidente: "+ listaPresidentes.get(i).getNome());
+                    System.out.println("Partido "+ listaPresidentes.get(i).getPartido());
+                }
+            }
+            for(int i = 0; i < listaGovernadores.size(); i++){
+                if (ranking(2) == listaGovernadores.get(i).getQntdVotos()){
+                    System.out.println("Primeiro lugar Governador: "+ listaGovernadores.get(i).getNome());
+                    System.out.println("Partido "+ listaGovernadores.get(i).getPartido());
+                }
+            }
+            for(int i = 0; i < listaPrefeitos.size(); i++){
+                if (ranking(3) == listaPrefeitos.get(i).getQntdVotos()){
+                    System.out.println("Primeiro lugar Prefeito: "+ listaPrefeitos.get(i).getNome());
+                    System.out.println("Partido "+ listaPrefeitos.get(i).getPartido());
+                }
+            }
+            for(int i = 0; i < listaPresidentes.size(); i++){
+                numVotosPresidentes += listaPresidentes.get(i).getQntdVotos();
+            }
+            for(int i = 0; i < listaGovernadores.size(); i++){
+                numVotosPresidentes += listaGovernadores.get(i).getQntdVotos();
+            }
+            for(int i = 0; i < listaPrefeitos.size(); i++){
+                numVotosPresidentes += listaPrefeitos.get(i).getQntdVotos();
+            }
+            totalVotos = numVotosPresidentes + numVotosGovernadores + numVotosPrefeitos + qtdNulo + qtdBranco;
+            int votosValidos = numVotosPresidentes + numVotosGovernadores + numVotosPrefeitos;
+            System.out.println("Total de votos = "+totalVotos);
+            System.out.println("Total de votos válidos = "+votosValidos+" = "+(votosValidos*100)/totalVotos+"%");
+            System.out.println("Total de votos brancos = "+qtdBranco+" = "+(qtdBranco*100)/totalVotos+"%");
+            System.out.println("Total de votos nulos = "+qtdNulo+" = "+(qtdNulo*100)/totalVotos+"%");
+            
+        }
+    
+    public void relatorioEstatisticas(){
+        System.out.println("Lista de eleitores: ");
+        for(int i = 0; i < listaEleitores.size(); i++){
+            System.out.println(listaEleitores.get(i).getNome());
+        }
+        System.out.println("Total de eleitores = "+listaEleitores.size());
+        System.out.println(listaEleitores.size()+" eleitores para 3 cargos = "+totalVotos+" votos");
     }
 }
+

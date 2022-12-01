@@ -1,33 +1,11 @@
 package com.example;
 
-public class Governador {
-    private String nome;
-    private String partido;
-    private int numCandidato;
-    private String cargo;
+public class Governador extends Candidato {
 
-    public Governador(String nome, String partido, int numCandidato, String cargo){
-        this.nome = nome;
-        this.partido = partido;
-        this.numCandidato = numCandidato;
-        this.cargo = cargo;
+    public Governador(String nome, String partido, String cargo, int numCandidato, int qntdVotos){
+        super(nome, partido, cargo, numCandidato, qntdVotos);
     }
 
-    //getters
-    public String getNome(){
-        return this.nome;
-    }
 
-    public String getPartido(){
-        return this.partido;
-    }
-
-    public int getNum_candidato(){
-        return this.numCandidato;
-    }
-
-    public String getCargo(){
-        return this.cargo;
-    }
 
 }

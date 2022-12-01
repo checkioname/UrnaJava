@@ -8,6 +8,7 @@ public class Eleitores {
         this.nome = nome;
         this.cpf = cpf;
     }
+    public Eleitores(){}
     
     //getters
     public String getNome(){
@@ -17,4 +18,11 @@ public class Eleitores {
     public String getCpf(){
         return this.cpf;
     }
+
+    public void setNome(String nome){
+        this.nome = nome;
+    }
+    public void setCpf(String cpf){
+        this.cpf = cpf;
+    } 
 }
